@@ -11,24 +11,24 @@ const router = Router();
 
 router.post(
   "/",
-  authGuard(UserRole.USER, UserRole.ADMIN),
+  authGuard(UserRole.USER),
   validateRequest(createPostSchema),
   postController.createPost,
 );
 
 router.patch(
   "/:id",
-  authGuard(UserRole.USER, UserRole.ADMIN),
+  authGuard(UserRole.USER),
   validateRequest(updatePostSchema),
   postController.updatePost,
 );
 
 router.delete(
   "/:id",
-  authGuard(UserRole.USER, UserRole.ADMIN),
+  authGuard(UserRole.USER),
   postController.deletePost,
 );
-router.get("/", postController.getAllPosts);
-router.get("/:id", postController.getPostById);
+router.get("/",authGuard(UserRole.USER), postController.getMyAllPosts);
+router.get("/:id",authGuard(UserRole.USER), postController.getMyPostById);
 
 export const postRoutes = router;

@@ -31,17 +31,18 @@ const deletePost = async (postId: string, userId: string) => {
 };
 
 // Get all posts
-const getAllPosts = async () => {
+const getMyAllPosts = async (userId: string) => {
   return prisma.post.findMany({
+    where: { authorId: userId },
     include: { author: true, comments: true, likes: true },
     orderBy: { createdAt: "desc" },
   });
 };
 
 // Get post by id
-const getPostById = async (postId: string) => {
+const getMyPostById = async (postId: string,userId: string) => {
   return prisma.post.findUnique({
-    where: { id: postId },
+    where: { id: postId,authorId:userId },
     include: { author: true, comments: true, likes: true },
   });
 };
@@ -50,6 +51,6 @@ export const postService = {
   createPost,
   updatePost,
   deletePost,
-  getAllPosts,
-  getPostById,
+  getMyAllPosts,
+  getMyPostById,
 };

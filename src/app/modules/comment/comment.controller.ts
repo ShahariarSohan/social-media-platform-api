@@ -45,8 +45,8 @@ const deleteComment = catchAsync(
   },
 );
 
-const getAllComments = catchAsync(async (req: Request, res: Response) => {
-  const comments = await commentService.getAllComments();
+const getMyAllComments = catchAsync(async (req: Request & { user?: any }, res: Response) => {
+  const comments = await commentService.getMyAllComments(req.user.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -54,8 +54,8 @@ const getAllComments = catchAsync(async (req: Request, res: Response) => {
     data: comments,
   });
 });
-const getCommentById=catchAsync(async(req:Request,res:Response)=>{
-  const comment=await commentService.getCommentById(req.params.id)
+const getMyCommentById=catchAsync(async(req:Request & { user?: any },res:Response)=>{
+  const comment=await commentService.getMyCommentById(req.params.id,req.user.id)
   sendResponse(res,{
     statusCode:httpStatus.OK,
     success:true,
@@ -67,6 +67,6 @@ export const commentController = {
   createComment,
   updateComment,
   deleteComment,
-  getAllComments,
-  getCommentById,
+  getMyAllComments,
+  getMyCommentById,
 };

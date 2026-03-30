@@ -46,8 +46,8 @@ const unlikePost = catchAsync(
   },
 );
 
-const getAllLikes = catchAsync(async (req: Request, res: Response) => {
-  const likes = await likeService.getAllLikes();
+const getMyAllLikes = catchAsync(async (req: Request & { user?: any }, res: Response) => {
+  const likes = await likeService.getMyAllLikes(req.user.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -56,8 +56,8 @@ const getAllLikes = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getLikesByPost = catchAsync(async (req: Request, res: Response) => {
-  const likes = await likeService.getLikesByPost(req.params.postId);
+const getMyLikesByPost = catchAsync(async (req: Request & { user?: any }, res: Response) => {
+  const likes = await likeService.getMyLikesByPost(req.params.postId,req.user.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -69,7 +69,7 @@ const getLikesByPost = catchAsync(async (req: Request, res: Response) => {
 export const likeController = {
   likePost,
   unlikePost,
-  getAllLikes,
-  getLikesByPost,
+  getMyAllLikes,
+  getMyLikesByPost,
   toggleLike
 };

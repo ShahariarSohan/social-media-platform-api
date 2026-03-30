@@ -6,21 +6,21 @@ import { UserRole } from "../../interfaces/userRole";
 
 const router = Router();
 router.post(
-  "/:postId",
-  authGuard(UserRole.USER, UserRole.ADMIN),
+  "/toggle/:postId",
+  authGuard(UserRole.USER),
   likeController.toggleLike,
 );
 router.post(
-  "/:postId",
-  authGuard(UserRole.USER, UserRole.ADMIN),
+  "/like/:postId",
+  authGuard(UserRole.USER),
   likeController.likePost,
 );
 router.delete(
-  "/:postId",
-  authGuard(UserRole.USER, UserRole.ADMIN),
+  "/unlike/:postId",
+  authGuard(UserRole.USER),
   likeController.unlikePost,
 );
-router.get("/", likeController.getAllLikes);
-router.get("/:postId", likeController.getLikesByPost);
+router.get("/",authGuard(UserRole.USER), likeController.getMyAllLikes);
+router.get("/:postId",authGuard(UserRole.USER), likeController.getMyLikesByPost);
 
 export const likeRoutes = router;

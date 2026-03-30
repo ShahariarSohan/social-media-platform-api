@@ -4,6 +4,7 @@ import { authRoutes } from "../modules/auth/auth.route";
 import { postRoutes } from "../modules/post/post.route";
 import { commentRoutes } from "../modules/comment/comment.route";
 import { likeRoutes } from "../modules/like/like.route";
+import { adminRoutes } from "../modules/admin/admin.route";
 
 
 export const router = Router();
@@ -27,6 +28,10 @@ const moduleRoutes: IModuleRoutes[] = [
   {
     path: "/likes",
     route: likeRoutes,
+  },
+  {
+    path: "/admin",
+    route: adminRoutes,
   },
 
 ];

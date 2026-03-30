@@ -40,17 +40,21 @@ const unlikePost = async (postId: string, userId: string) => {
 };
 
 // Get all likes
-const getAllLikes = async () => {
+const getMyAllLikes = async (userId: string) => {
+
   return prisma.like.findMany({
+    where:{
+      userId:userId
+    },
     include: { user: true, post: true },
     orderBy: { createdAt: "desc" },
   });
 };
 
 // Get likes of a post
-const getLikesByPost = async (postId: string) => {
+const getMyLikesByPost = async (postId: string,userId:string) => {
   return prisma.like.findMany({
-    where: { postId },
+    where: { postId,userId },
     include: { user: true },
   });
 };
@@ -58,7 +62,7 @@ const getLikesByPost = async (postId: string) => {
 export const likeService = {
   likePost,
   unlikePost,
-  getAllLikes,
-  getLikesByPost,
+  getMyAllLikes,
+  getMyLikesByPost,
   toggleLike
 };

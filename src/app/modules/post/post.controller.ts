@@ -45,8 +45,8 @@ const deletePost = catchAsync(
   },
 );
 
-const getAllPosts = catchAsync(async (req: Request, res: Response) => {
-  const posts = await postService.getAllPosts();
+const getMyAllPosts = catchAsync(async (req: Request & { user?: any }, res: Response) => {
+  const posts = await postService.getMyAllPosts(req.user.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -55,8 +55,8 @@ const getAllPosts = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getPostById = catchAsync(async (req: Request, res: Response) => {
-  const post = await postService.getPostById(req.params.id);
+const getMyPostById = catchAsync(async (req: Request & { user?: any }, res: Response) => {
+  const post = await postService.getMyPostById(req.params.id,req.user.id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -69,6 +69,6 @@ export const postController = {
   createPost,
   updatePost,
   deletePost,
-  getAllPosts,
-  getPostById,
+  getMyAllPosts,
+  getMyPostById,
 };
