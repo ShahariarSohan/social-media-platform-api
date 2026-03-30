@@ -7,7 +7,17 @@ import { Request, Response } from "express";
 import sendResponse from "../../shared/sendResponse";
 import { envVariables } from "../../config/env";
 import { parseExpiryToken } from "../../shared/parseExpiryToken";
+// auth.controller.ts
+const registerUser = catchAsync(async (req: Request, res: Response) => {
+  const user = await authService.registerUser(req.body);
 
+  sendResponse(res, {
+    statusCode: httpStatus.CREATED,
+    success: true,
+    message: "User registered successfully",
+    data: user,
+  });
+});
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const accessTokenMaxAge = parseExpiryToken(
     envVariables.ACCESS_TOKEN_EXPIRES_IN as string,
@@ -76,6 +86,28 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+// auth.controller.ts
+const updateMe = catchAsync(async (req: Request & { user?: any }, res: Response) => {
+  let avatarUrl = req.user.avatar;
+
+  if (req.file) {
+    avatarUrl = (req.file as any).path; // Cloudinary URL
+  }
+
+  const payload = {
+    ...req.body,
+    avatar: avatarUrl,
+  };
+
+  const updatedUser = await authService.updateMe(req.user.id, payload);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Profile updated successfully",
+    data: updateMe,
+  });
+});
 export const authController = {
-  loginUser,logoutUser,getMe
+  loginUser,logoutUser,getMe,registerUser,updateMe
 };

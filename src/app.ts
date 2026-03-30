@@ -14,7 +14,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.set("trust proxy", 1);
 
-app.use("/api", router);
+app.use("/api/v1", router);
 
 app.get("/", (req: Request, res: Response) => {
    res.status(200).json({

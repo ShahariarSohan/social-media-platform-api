@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from "http-status";
-import bcrypt from "bcrypt";
+
 
 import { jwtHelpers } from "../../utils/jwtHelpers";
 
@@ -8,7 +8,37 @@ import { Secret } from "jsonwebtoken";
 
 import AppError from "../../errorHelpers/AppError";
 import { envVariables } from "../../config/env";
-import { prisma } from "../../config/prisma";
+
+// auth.service.ts
+import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
+
+const prisma = new PrismaClient();
+
+const registerUser = async (payload: any) => {
+  const isUserExist = await prisma.user.findUnique({
+    where: {
+      email: payload.email,
+    },
+  });
+  if (isUserExist) {
+    throw new AppError(httpStatus.BAD_REQUEST, "User already exists");
+  }
+  const hashedPassword = await bcrypt.hash(payload.password, 10);
+
+  const user = await prisma.user.create({
+    data: {
+      email: payload.email,
+      username: payload.username,
+      password: hashedPassword,
+      bio: payload.bio,
+      avatar: payload.avatar, // URL or path
+    },
+  });
+
+  return user;
+};
+
 
 const loginUser = async (payload: { email: string; password: string }) => {
   const userData = await prisma.user.findUnique({
@@ -74,6 +104,25 @@ const getMe = async (decodedUser: any) => {
 
   return userData;
 };
-export const authService = {
-  loginUser,getMe
+
+
+
+const updateMe = async (userId: string, payload: any) => {
+  // Optional: hash password if included
+  if (payload.password) {
+    payload.password = await bcrypt.hash(payload.password, 10);
+  }
+
+  return prisma.user.update({
+    where: { id: userId },
+    data: payload,
+  });
 };
+
+export const authService = {
+  loginUser,
+  registerUser,
+  getMe,
+  updateMe, 
+};
+
