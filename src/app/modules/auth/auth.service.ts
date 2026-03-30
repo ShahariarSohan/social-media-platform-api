@@ -97,6 +97,8 @@ const getMe = async (decodedUser: any) => {
       id: true,
       username: true,
       email: true,
+      bio: true,
+      avatar: true,
       createdAt: true,
       updatedAt: true,
     },
