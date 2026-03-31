@@ -8,6 +8,7 @@ import { updateUserRoleSchema } from "./admin.validataion";
 
 
 const router = Router();
+router.get("/posts", adminController.getAllPosts);
 
 // All routes protected for ADMIN only
 router.use(authGuard(UserRole.ADMIN));
@@ -26,7 +27,6 @@ router.patch(
 );
 
 // Posts
-router.get("/posts", adminController.getAllPosts);
 router.get("/posts/:id", adminController.getPostById);
 router.delete("/posts/:id", adminController.deletePost);
 
