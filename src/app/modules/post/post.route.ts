@@ -5,6 +5,7 @@ import authGuard from "../../middlewares/authGuard";
 import { UserRole } from "../../interfaces/userRole";
 import { validateRequest } from "../../middlewares/validateRequest";
 import { createPostSchema, updatePostSchema } from "./post.validataion";
+import { upload } from "../../config/multerCloudinary";
 
 
 const router = Router();
@@ -12,6 +13,7 @@ const router = Router();
 router.post(
   "/",
   authGuard(UserRole.USER),
+  upload.single("image"),
   validateRequest(createPostSchema),
   postController.createPost,
 );

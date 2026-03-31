@@ -88,7 +88,7 @@ const getMe = catchAsync(async (req: Request, res: Response) => {
 });
 // auth.controller.ts
 const updateMe = catchAsync(async (req: Request & { user?: any }, res: Response) => {
-  let avatarUrl = req.user.avatar;
+  let avatarUrl;
 
   if (req.file) {
     avatarUrl = (req.file as any).path; // Cloudinary URL

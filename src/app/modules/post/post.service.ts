@@ -8,6 +8,7 @@ const createPost = async (payload: any, userId: string) => {
       title: payload.title,
       content: payload.content,
       authorId: userId,
+      imageUrl: payload.imageUrl,
     },
   });
 };
@@ -40,9 +41,9 @@ const getMyAllPosts = async (userId: string) => {
 };
 
 // Get post by id
-const getMyPostById = async (postId: string,userId: string) => {
+const getMyPostById = async (postId: string, userId: string) => {
   return prisma.post.findUnique({
-    where: { id: postId,authorId:userId },
+    where: { id: postId, authorId: userId },
     include: { author: true, comments: true, likes: true },
   });
 };

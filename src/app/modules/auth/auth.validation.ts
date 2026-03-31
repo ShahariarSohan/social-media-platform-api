@@ -16,5 +16,9 @@ export const registerZodSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
   password: z.string().min(6, "Password must be at least 6 characters"),
   bio: z.string().max(200).optional(),
-  avatar: z.string().url("Avatar must be a valid URL").optional(),
+  avatar: z.string().optional(),
+});
+export const updateMeZodSchema = z.object({
+  bio: z.string().max(200).optional(),
+  avatar: z.string().optional(),
 });

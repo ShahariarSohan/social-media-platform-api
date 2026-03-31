@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authController } from "./auth.controller";
 import { validateRequest } from "../../middlewares/validateRequest";
-import { loginZodSchema, registerZodSchema } from "./auth.validation";
+import { loginZodSchema, registerZodSchema, updateMeZodSchema } from "./auth.validation";
 import authGuard from "../../middlewares/authGuard";
 import { UserRole } from "../../interfaces/userRole";
 import { upload } from "../../config/multerCloudinary";
@@ -22,6 +22,7 @@ router.patch(
   "/updateMe",
   authGuard(UserRole.USER),
   upload.single("avatar"),
+  validateRequest(updateMeZodSchema),
   authController.updateMe,
 );
 export const authRoutes = router;

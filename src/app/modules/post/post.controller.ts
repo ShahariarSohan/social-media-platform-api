@@ -7,7 +7,17 @@ import httpStatus from "http-status";
 
 const createPost = catchAsync(
   async (req: Request & { user?: any }, res: Response) => {
-    const post = await postService.createPost(req.body, req.user.id);
+    let imageUrl;
+
+    if (req.file) {
+      imageUrl = (req.file as any).path; // Cloudinary URL
+    }
+     const payload = {
+       ...req.body,
+       imageUrl,
+    };
+    console.log("payload from controller",payload)
+    const post = await postService.createPost(payload, req.user.id);
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
       success: true,
