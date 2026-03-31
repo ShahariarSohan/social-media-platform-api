@@ -43,10 +43,24 @@ const unlikePost = async (postId: string, userId: string) => {
 const getMyAllLikes = async (userId: string) => {
 
   return prisma.like.findMany({
-    where:{
-      userId:userId
+    where: {
+      userId: userId,
     },
-    include: { user: true, post: true },
+    include: {
+      user: {
+        select: {
+          id: true,
+          email: true,
+          username: true,
+          role: true,
+          avatar: true,
+          bio: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+      post: true,
+    },
     orderBy: { createdAt: "desc" },
   });
 };
@@ -54,8 +68,21 @@ const getMyAllLikes = async (userId: string) => {
 // Get likes of a post
 const getMyLikesByPost = async (postId: string,userId:string) => {
   return prisma.like.findMany({
-    where: { postId,userId },
-    include: { user: true },
+    where: { postId, userId },
+    include: {
+      user: {
+        select: {
+          id: true,
+          email: true,
+          username: true,
+          role: true,
+          avatar: true,
+          bio: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+    },
   });
 };
 

@@ -35,7 +35,22 @@ const deletePost = async (postId: string, userId: string) => {
 const getMyAllPosts = async (userId: string) => {
   return prisma.post.findMany({
     where: { authorId: userId },
-    include: { author: true, comments: true, likes: true },
+    include: {
+      author: {
+        select: {
+          id: true,
+          email: true,
+          username: true,
+          role: true,
+          avatar: true,
+          bio: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+      comments: true,
+      likes: true,
+    },
     orderBy: { createdAt: "desc" },
   });
 };
@@ -44,7 +59,22 @@ const getMyAllPosts = async (userId: string) => {
 const getMyPostById = async (postId: string, userId: string) => {
   return prisma.post.findUnique({
     where: { id: postId, authorId: userId },
-    include: { author: true, comments: true, likes: true },
+    include: {
+      author: {
+        select: {
+          id: true,
+          email: true,
+          username: true,
+          role: true,
+          avatar: true,
+          bio: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+      comments: true,
+      likes: true,
+    },
   });
 };
 

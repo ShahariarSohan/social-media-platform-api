@@ -4,14 +4,44 @@ const prisma = new PrismaClient();
 
 const getAllPosts = async () =>
   prisma.post.findMany({
-    include: { author: true, comments: true, likes: true },
+    include: {
+      author: {
+        select: {
+          id: true,
+          email: true,
+          username: true,
+          role: true,
+          avatar: true,
+          bio: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+      comments: true,
+      likes: true,
+    },
     orderBy: { createdAt: "desc" },
   });
 
 const getPostById = async (id: string) =>
   prisma.post.findUnique({
     where: { id },
-    include: { author: true, comments: true, likes: true },
+    include: {
+      author: {
+        select: {
+          id: true,
+          email: true,
+          username: true,
+          role: true,
+          avatar: true,
+          bio: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+      comments: true,
+      likes: true,
+    },
   });
 
 const deletePost = async (id: string) => prisma.post.delete({ where: { id } });

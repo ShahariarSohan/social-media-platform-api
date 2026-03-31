@@ -16,7 +16,6 @@ const createPost = catchAsync(
        ...req.body,
        imageUrl,
     };
-    console.log("payload from controller",payload)
     const post = await postService.createPost(payload, req.user.id);
     sendResponse(res, {
       statusCode: httpStatus.CREATED,

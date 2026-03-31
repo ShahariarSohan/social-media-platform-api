@@ -4,14 +4,42 @@ const prisma = new PrismaClient();
 
 const getAllComments = async () =>
   prisma.comment.findMany({
-    include: { author: true, post: true },
+    include: {
+      author: {
+        select: {
+          id: true,
+          email: true,
+          username: true,
+          role: true,
+          avatar: true,
+          bio: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+      post: true,
+    },
     orderBy: { createdAt: "desc" },
   });
 
 const getCommentById = async (id: string) =>
   prisma.comment.findUnique({
     where: { id },
-    include: { author: true, post: true },
+    include: {
+      author: {
+        select: {
+          id: true,
+          email: true,
+          username: true,
+          role: true,
+          avatar: true,
+          bio: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+      post: true,
+    },
   });
 
 const deleteComment = async (id: string) =>
