@@ -111,9 +111,7 @@ const getMe = async (decodedUser: any) => {
 
 const updateMe = async (userId: string, payload: any) => {
   // Optional: hash password if included
-  if (payload.password) {
-    payload.password = await bcrypt.hash(payload.password, 10);
-  }
+ 
 
   return prisma.user.update({
     where: { id: userId },

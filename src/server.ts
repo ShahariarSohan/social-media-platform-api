@@ -63,10 +63,10 @@ function handleProcessEvents() {
     gracefulShutdown("uncaughtException");
   });
 
-  process.on("unhandledRejection", (reason) => {
-    console.error("💥 Unhandled Rejection:", reason);
-    gracefulShutdown("unhandledRejection");
-  });
+  // process.on("unhandledRejection", (reason) => {
+  //   console.error("💥 Unhandled Rejection:", reason);
+  //   gracefulShutdown("unhandledRejection");
+  // });
 }
 
 (async () => {

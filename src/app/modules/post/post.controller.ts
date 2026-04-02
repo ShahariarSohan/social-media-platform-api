@@ -7,7 +7,7 @@ import httpStatus from "http-status";
 
 const createPost = catchAsync(
   async (req: Request & { user?: any }, res: Response) => {
-    let imageUrl;
+    let imageUrl: string | undefined;
 
     if (req.file) {
       imageUrl = (req.file as any).path; // Cloudinary URL

@@ -105,7 +105,7 @@ const updateMe = catchAsync(async (req: Request & { user?: any }, res: Response)
     statusCode: 200,
     success: true,
     message: "Profile updated successfully",
-    data: updateMe,
+    data: updatedUser,
   });
 });
 export const authController = {
