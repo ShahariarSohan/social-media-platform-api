@@ -5,7 +5,7 @@ import { postRoutes } from "../modules/post/post.route";
 import { commentRoutes } from "../modules/comment/comment.route";
 import { likeRoutes } from "../modules/like/like.route";
 import { adminRoutes } from "../modules/admin/admin.route";
-
+import { userRoutes } from "../modules/user/user.route";
 
 export const router = Router();
 interface IModuleRoutes {
@@ -33,7 +33,10 @@ const moduleRoutes: IModuleRoutes[] = [
     path: "/admin",
     route: adminRoutes,
   },
-
+  {
+    path: "/users",
+    route: userRoutes,
+  },
 ];
 
 moduleRoutes.forEach((route) => {
