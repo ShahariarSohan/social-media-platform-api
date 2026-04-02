@@ -28,7 +28,11 @@ const deletePost = async (postId: string, userId: string) => {
   if (!post) throw new Error("Post not found");
   if (post.authorId !== userId) throw new Error("Unauthorized");
 
-  return prisma.post.delete({ where: { id: postId } });
+  return prisma.$transaction([
+    prisma.like.deleteMany({ where: { postId } }),
+    prisma.comment.deleteMany({ where: { postId } }),
+    prisma.post.delete({ where: { id: postId } }),
+  ]);
 };
 
 // Get all posts
