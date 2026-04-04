@@ -101,6 +101,7 @@ const getMe = async (decodedUser: any) => {
       avatar: true,
       createdAt: true,
       updatedAt: true,
+      following: true,
     },
   });
 

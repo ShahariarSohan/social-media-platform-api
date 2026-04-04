@@ -30,6 +30,7 @@ router.delete(
   authGuard(UserRole.USER),
   postController.deletePost,
 );
+router.get("/feed", authGuard(UserRole.USER), postController.getFollowedFeed);
 router.get("/",authGuard(UserRole.USER), postController.getMyAllPosts);
 router.get("/:id",authGuard(UserRole.USER), postController.getMyPostById);
 

@@ -74,10 +74,21 @@ const getMyPostById = catchAsync(async (req: Request & { user?: any }, res: Resp
   });
 });
 
+const getFollowedFeed = catchAsync(async (req: Request & { user?: any }, res: Response) => {
+  const posts = await postService.getFollowedFeed(req.user.id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Followed feed retrieved successfully",
+    data: posts,
+  });
+});
+
 export const postController = {
   createPost,
   updatePost,
   deletePost,
   getMyAllPosts,
   getMyPostById,
+  getFollowedFeed,
 };

@@ -82,10 +82,46 @@ const getMyPostById = async (postId: string, userId: string) => {
   });
 };
 
+// Get followed feed
+const getFollowedFeed = async (userId: string) => {
+  // 1. Get the list of IDs of people the user follows
+  const following = await prisma.follow.findMany({
+    where: { followerId: userId },
+    select: { followingId: true },
+  });
+
+  const followingIds = following.map((f) => f.followingId);
+
+  // 2. Fetch posts from followed users PLUS the current user
+  return prisma.post.findMany({
+    where: {
+      authorId: { in: [...followingIds, userId] },
+    },
+    include: {
+      author: {
+        select: {
+          id: true,
+          email: true,
+          username: true,
+          role: true,
+          avatar: true,
+          bio: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      },
+      comments: true,
+      likes: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+};
+
 export const postService = {
   createPost,
   updatePost,
   deletePost,
   getMyAllPosts,
   getMyPostById,
+  getFollowedFeed,
 };
