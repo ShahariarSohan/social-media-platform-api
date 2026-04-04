@@ -5,6 +5,7 @@ import app from "./app";
 import { envVariables } from "./app/config/env";
 import { prisma } from "./app/config/prisma";
 import seedPlatformAdmin from "./app/utils/seedAdmin";
+import { initSocket } from "./app/utils/socket";
 
 let server: Server | null = null;
 
@@ -19,6 +20,10 @@ const connectToDB = async () => {
 const startServer = async () => {
   try {
     server = http.createServer(app);
+    
+    // Initialize Socket.io for Real-time Messaging
+    initSocket(server);
+
     server.listen(envVariables.PORT, () => {
       console.log(`✅ Server is running on port ${envVariables.PORT}`);
     });
