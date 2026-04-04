@@ -5,15 +5,18 @@ import sendResponse from "../../shared/sendResponse";
 import httpStatus from "http-status";
 import { adminUserService } from "../admin/admin.users.service";
 
-const getAllUsers = catchAsync(async (req: Request, res: Response) => {
-  const result = await adminUserService.getAllUsers();
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Users retrieved",
-    data: result,
-  });
-});
+const getAllUsers = catchAsync(
+  async (req: Request & { user?: any }, res: Response) => {
+    const user = req.user;
+    const result = await adminUserService.getAllUsers(user?.id);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Users retrieved",
+      data: result,
+    });
+  },
+);
 
 const getUserById = catchAsync(async (req: Request, res: Response) => {
   const result = await adminUserService.getUserById(req.params.id);

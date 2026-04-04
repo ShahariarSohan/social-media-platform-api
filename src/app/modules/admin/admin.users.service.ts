@@ -3,8 +3,9 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const getAllUsers = async () =>
+const getAllUsers = async (excludeId?: string) =>
   prisma.user.findMany({
+    where: excludeId ? { NOT: { id: excludeId } } : {},
     orderBy: { createdAt: "desc" },
     select: {
       id: true,
