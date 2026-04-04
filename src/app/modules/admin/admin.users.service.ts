@@ -19,6 +19,7 @@ const getAllUsers = async (excludeId?: string) =>
       posts: true,
       likes: true,
       comments: true,
+      followers: true,
     },
   });
 const getUserById = async (id: string) =>
@@ -52,6 +53,7 @@ const getUserById = async (id: string) =>
       },
       likes: true,
       comments: true,
+      followers: true,
     },
   });
 const deleteUser = async (id: string) => prisma.user.delete({ where: { id } });
