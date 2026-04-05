@@ -41,7 +41,11 @@ const deleteComment = async (commentId: string, userId: string) => {
   if (!comment) throw new Error("Comment not found");
   if (comment.authorId !== userId) throw new Error("Unauthorized");
 
-  return prisma.comment.delete({ where: { id: commentId } });
+  // In MongoDB, we use a transaction to delete replies first then the parent
+  return prisma.$transaction([
+    prisma.comment.deleteMany({ where: { parentId: commentId } }),
+    prisma.comment.delete({ where: { id: commentId } }),
+  ]);
 };
 
 // Get all comments

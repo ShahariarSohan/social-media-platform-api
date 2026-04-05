@@ -6,7 +6,6 @@ import { commentRoutes } from "../modules/comment/comment.route";
 import { likeRoutes } from "../modules/like/like.route";
 import { adminRoutes } from "../modules/admin/admin.route";
 import { userRoutes } from "../modules/user/user.route";
-import { chatRoutes } from "../modules/chat/chat.route";
 
 export const router = Router();
 interface IModuleRoutes {
@@ -37,10 +36,6 @@ const moduleRoutes: IModuleRoutes[] = [
   {
     path: "/users",
     route: userRoutes,
-  },
-  {
-    path: "/chat",
-    route: chatRoutes,
   },
 ];
 

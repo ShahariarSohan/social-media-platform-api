@@ -1,3 +1,4 @@
+// src/app/modules/post/post.service.ts
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
@@ -35,37 +36,21 @@ const deletePost = async (postId: string, userId: string) => {
   ]);
 };
 
-// Get all posts
+// Get all posts for a user
 const getMyAllPosts = async (userId: string) => {
   return prisma.post.findMany({
     where: { authorId: userId },
     include: {
       author: {
-        select: {
-          id: true,
-          username: true,
-          avatar: true,
-        },
+        select: { id: true, username: true, avatar: true },
       },
       comments: {
         where: { parentId: null },
         include: {
-          author: {
-            select: {
-              id: true,
-              username: true,
-              avatar: true,
-            },
-          },
+          author: { select: { id: true, username: true, avatar: true } },
           replies: {
             include: {
-              author: {
-                select: {
-                  id: true,
-                  username: true,
-                  avatar: true,
-                },
-              },
+              author: { select: { id: true, username: true, avatar: true } },
             },
           },
         },
@@ -83,31 +68,15 @@ const getMyPostById = async (postId: string, userId: string) => {
     where: { id: postId, authorId: userId },
     include: {
       author: {
-        select: {
-          id: true,
-          username: true,
-          avatar: true,
-        },
+        select: { id: true, username: true, avatar: true },
       },
       comments: {
         where: { parentId: null },
         include: {
-          author: {
-            select: {
-              id: true,
-              username: true,
-              avatar: true,
-            },
-          },
+          author: { select: { id: true, username: true, avatar: true } },
           replies: {
             include: {
-              author: {
-                select: {
-                  id: true,
-                  username: true,
-                  avatar: true,
-                },
-              },
+              author: { select: { id: true, username: true, avatar: true } },
             },
           },
         },
@@ -120,7 +89,6 @@ const getMyPostById = async (postId: string, userId: string) => {
 
 // Get followed feed
 const getFollowedFeed = async (userId: string) => {
-  // 1. Get the list of IDs of people the user follows
   const following = await prisma.follow.findMany({
     where: { followerId: userId },
     select: { followingId: true },
@@ -128,43 +96,21 @@ const getFollowedFeed = async (userId: string) => {
 
   const followingIds = following.map((f) => f.followingId);
 
-  // 2. Fetch posts from followed users PLUS the current user
   return prisma.post.findMany({
     where: {
       authorId: { in: [...followingIds, userId] },
     },
     include: {
       author: {
-        select: {
-          id: true,
-          email: true,
-          username: true,
-          role: true,
-          avatar: true,
-          bio: true,
-          createdAt: true,
-          updatedAt: true,
-        },
+        select: { id: true, username: true, avatar: true, email: true },
       },
       comments: {
         where: { parentId: null },
         include: {
-          author: {
-            select: {
-              id: true,
-              username: true,
-              avatar: true,
-            },
-          },
+          author: { select: { id: true, username: true, avatar: true } },
           replies: {
             include: {
-              author: {
-                select: {
-                  id: true,
-                  username: true,
-                  avatar: true,
-                },
-              },
+              author: { select: { id: true, username: true, avatar: true } },
             },
           },
         },
