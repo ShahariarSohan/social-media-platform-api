@@ -43,16 +43,34 @@ const getMyAllPosts = async (userId: string) => {
       author: {
         select: {
           id: true,
-          email: true,
           username: true,
-          role: true,
           avatar: true,
-          bio: true,
-          createdAt: true,
-          updatedAt: true,
         },
       },
-      comments: true,
+      comments: {
+        where: { parentId: null },
+        include: {
+          author: {
+            select: {
+              id: true,
+              username: true,
+              avatar: true,
+            },
+          },
+          replies: {
+            include: {
+              author: {
+                select: {
+                  id: true,
+                  username: true,
+                  avatar: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      },
       likes: true,
     },
     orderBy: { createdAt: "desc" },
@@ -67,16 +85,34 @@ const getMyPostById = async (postId: string, userId: string) => {
       author: {
         select: {
           id: true,
-          email: true,
           username: true,
-          role: true,
           avatar: true,
-          bio: true,
-          createdAt: true,
-          updatedAt: true,
         },
       },
-      comments: true,
+      comments: {
+        where: { parentId: null },
+        include: {
+          author: {
+            select: {
+              id: true,
+              username: true,
+              avatar: true,
+            },
+          },
+          replies: {
+            include: {
+              author: {
+                select: {
+                  id: true,
+                  username: true,
+                  avatar: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      },
       likes: true,
     },
   });
@@ -110,7 +146,30 @@ const getFollowedFeed = async (userId: string) => {
           updatedAt: true,
         },
       },
-      comments: true,
+      comments: {
+        where: { parentId: null },
+        include: {
+          author: {
+            select: {
+              id: true,
+              username: true,
+              avatar: true,
+            },
+          },
+          replies: {
+            include: {
+              author: {
+                select: {
+                  id: true,
+                  username: true,
+                  avatar: true,
+                },
+              },
+            },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      },
       likes: true,
     },
     orderBy: { createdAt: "desc" },

@@ -3,11 +3,13 @@ import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
 import sendResponse from "../../shared/sendResponse";
 import { commentService } from "./comment.service";
+import { getIO } from "../../utils/socket";
 import httpStatus from "http-status";
 
 const createComment = catchAsync(
   async (req: Request & { user?: any }, res: Response) => {
     const comment = await commentService.createComment(req.body, req.user.id);
+
     sendResponse(res, {
       statusCode: httpStatus.CREATED,
       success: true,
@@ -35,7 +37,15 @@ const updateComment = catchAsync(
 
 const deleteComment = catchAsync(
   async (req: Request & { user?: any }, res: Response) => {
-    await commentService.deleteComment(req.params.id, req.user.id);
+    const commentId = req.params.id;
+    const userId = req.user.id;
+    
+    // Fetch comment once to get postId for socket room before it's deleted
+    const comment = await commentService.getMyCommentById(commentId, userId);
+    if (!comment) throw new Error("Comment not found or unauthorized");
+
+    await commentService.deleteComment(commentId, userId);
+
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,

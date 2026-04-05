@@ -8,6 +8,16 @@ const createComment = async (payload: any, userId: string) => {
       content: payload.content,
       postId: payload.postId,
       authorId: userId,
+      parentId: payload.parentId || null,
+    },
+    include: {
+      author: {
+        select: {
+          id: true,
+          username: true,
+          avatar: true,
+        },
+      },
     },
   });
 };
@@ -44,13 +54,8 @@ const getMyAllComments = async (userId: string) => {
       author: {
         select: {
           id: true,
-          email: true,
           username: true,
-          role: true,
           avatar: true,
-          bio: true,
-          createdAt: true,
-          updatedAt: true,
         },
       },
       post: true,
@@ -58,26 +63,32 @@ const getMyAllComments = async (userId: string) => {
     orderBy: { createdAt: "desc" },
   });
 };
-const getMyCommentById=async(id:string,userId:string)=>{
+const getMyCommentById = async (id: string, userId: string) => {
   return prisma.comment.findUnique({
     where: { id, authorId: userId },
     include: {
       author: {
         select: {
           id: true,
-          email: true,
           username: true,
-          role: true,
           avatar: true,
-          bio: true,
-          createdAt: true,
-          updatedAt: true,
+        },
+      },
+      replies: {
+        include: {
+          author: {
+            select: {
+              id: true,
+              username: true,
+              avatar: true,
+            },
+          },
         },
       },
       post: true,
     },
   });
-}
+};
 export const commentService = {
   createComment,
   updateComment,
